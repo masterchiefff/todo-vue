@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 import HeaderVue from './components/Header.vue';
 import FooterVue from './components/Footer.vue';
+import ToastVue from './components/Toast.vue';
 </script>
 
 <template>
@@ -12,6 +13,8 @@ import FooterVue from './components/Footer.vue';
         <RouterView/>
       </div>
       <FooterVue />
+      <ToastVue class="hidden"/>
     </div>
   </div>
+
 </template>

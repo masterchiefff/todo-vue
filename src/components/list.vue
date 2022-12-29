@@ -5,11 +5,11 @@ export default {
         return {
             isDone: false,
             parentMessage: 'Parent',
-            todos: [{ id:'1', message: 'Learn view js' }, { id:'2', message: 'Go to bed' },{ id:'3', message: 'Go to bed' }, ]
+            todos: [{ id:'1', message: 'Learn view js' }, { id:'2', message: 'Work on the delete functionality' },{ id:'3', message: 'Go to bed' }, ]
         }
     },
     methods: {
-        markDone (  ) {
+        markDone () {
             this.isDone = !this.isDone
         },
 
@@ -25,10 +25,10 @@ export default {
 props: ['todo'],
 
 <template>
-    <li class="py-3 sm:py-4" v-for="(todo, index) in todos" :key="todo.message">
+    <li class="py-3 sm:py-4"  v-for="(todo, index) in todos" :key="todo.message">
         <div class="flex items-center ">
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray truncate" :class="[ isDone ? 'done' : 'text-grey' ]">
+                <p class="text-sm font-medium truncate" :class="[ isDone ? 'text-gray-light line-through' : 'text-gray' ]">
                     {{ todo.message }}
                 </p>
             </div>
