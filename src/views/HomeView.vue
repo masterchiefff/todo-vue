@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import Cards from '../components/Cards.vue';
+import listVue from '@/components/list.vue';
 </script>
 
 
 <template>
-    <div class="w-full max-w-md p-4 bg-white rounded-b-lg shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div class="w-full overflow-x-auto bg-white px-0 sm:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div class="flow-root">
-            <ul ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-                <Cards></Cards>
+            <ul role="list">
+                <listVue />
             </ul>
         </div>
     </div>
