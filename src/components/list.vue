@@ -1,31 +1,17 @@
-<script lang="ts">
+<script>
+import ButtonVue from './Button.vue';
+import todos from '../assets/todos.json';
 
 export default {
     data() {
         return {
             editedTodoId: null,
             total_todos: 0,
-            todos: [
-                { id:'1', message: 'Learn view js', completed:true }, 
-                { id:'2', message: 'Work on the delete functionality', completed:true }, 
-                { id:'3', message: 'Create the inline editing functionality', completed:false }, 
-                { id:'4', message: 'Create a todo drag functionality', completed:false }, 
-                { id:'5', message: 'Create a input for adding more items', completed:false }, 
-                { id:'6', message: 'Create the todo list app backend', completed:false }, 
-                { id:'7', message: 'Create the todolist google chrome extension', completed:false },
-
-            ]
+            todos: []
         }
     },
     methods: {
-        getObject (text,completed) {
-			return function () {
-				return {
-					text: text,
-					completed: completed
-				};
-			}
-		},
+
         markDone (index) {
             const object = this.todos[index];
             if (object.completed) {
@@ -54,6 +40,9 @@ export default {
             this.total_todos = this.todos.length;
             console.log(`${index}th element deleted! `);
         }
+    },
+    created () {
+        this.todos = todos;
     }
 }
     
@@ -62,12 +51,12 @@ export default {
 props: ['todo'],
 
 <template>
-    <li class="py-3 sm:py-4 hover:text-purple hover:font-black"  v-for="(todo, index) in todos" :key="todo.id">
+    <li class="py-3 sm:py-4"  v-for="(todo, index) in todos" :key="todo.id">
         <template v-if="editedTodoId === todo.id">
-            <input type="text" v-model="todo.message" :ref="`field${todo.id}`" />
-            <button class="btn" @click.prevent="editItem">
-                <template>Save</template>
-            </button>
+            <div class="flex">
+                <input type="text" v-model="todo.message" :ref="`field${todo.id}`" class="w-48 bg-gray-50 border border-gray-300 text-gray text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+                <button class="ml-2 mt-2 ext-white bg-yellow hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click.prevent="editItem">save</button>
+            </div>
         </template>
         <template v-else>
             <div class="flex items-center" @dblclick.prevent="editItem(todo.id)">
