@@ -7,6 +7,51 @@
     { 
         "id":2, 
         "message": "Ride my bike", 
+        "completed":true 
+    },
+    {
+        "id":3, 
+        "message": "Design the todo interface", 
+        "completed":false 
+    },
+    {
+        "id":4, 
+        "message": "Add 'mark as done' functionality", 
+        "completed":false 
+    },
+    {
+        "id":5, 
+        "message": "Work on the delete functionality", 
+        "completed":false 
+    },
+    {
+        "id":6, 
+        "message": "Create the inline editing functionality", 
+        "completed":false 
+    },
+    {
+        "id":7, 
+        "message": "Create a todo drag functionality", 
+        "completed":false 
+    },
+    {
+        "id":8, 
+        "message": "Create a input for adding more items", 
+        "completed":false 
+    },
+    {
+        "id":9, 
+        "message": "Create the todo list app backend", 
+        "completed":false 
+    },
+    {
+        "id":9, 
+        "message": "Create the todolist google chrome extension", 
+        "completed":false 
+    },
+    {
+        "id":9, 
+        "message": "Create a working date", 
         "completed":false 
     }
 

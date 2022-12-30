@@ -11,24 +11,26 @@ export default {
     },
     methods: {
         submitItem (id, text, completed) {
-            axios.post('src/assets/todos.json', {
-                title: this.newTodo
-
-
-            })
-            .then(response => {
-                this.todos.push({
-                    id: response.data.id,
-                    message: this.newTodo,
-                    completed: false
+            if(this.newTodo === '' || this.newTodo === null || this.newTodo === 0) {
+                console.log('field is empty')
+            }else {
+                axios.post('http://localhost:4000/api/v1/todos', {
+                    title: this.newTodo
+                })
+                .then(response => {
+                    const todo = this.todos.push({
+                        id: response.data.id,
+                        message: this.newTodo,
+                        completed: false
+                    });
+                    window.localStorage.setItem('todo', JSON.stringify(todo));
+                    this.newTodo = '';
+                    
+                })
+                .catch(error => {
+                    console.log(error);
                 });
-                console.log(this.todos)
-                this.newTodo = '';
-                
-            })
-            .catch(error => {
-                console.log(error);
-            });
+            }
         }
     },
     created() {
@@ -41,7 +43,7 @@ export default {
     <form action="submit" v-on:submit.prevent='submitItem'>
         <div class="p-4 bg-white rounded-lg shadow md:flex md:items-center mt-4 md:justify-between md:p-6 dark:bg-gray-800">
             <div class="flex">
-                <input type="text" v-model="newTodo" placeholder="Create a todo" class="w-48 border-transparent focus:border-transparent focus:ring-0 block mb-2 text-sm font-medium text-gray px-2.5"/>
+                <input type="text" v-model="newTodo" placeholder="Create a todo" class="w-48 border-transparent focus:outline-0 mb-2 text-sm font-medium text-gray px-2.5"/>
                 <button class="ml-2 ext-white bg-purple text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Create Todo</button>
             </div>
         </div>

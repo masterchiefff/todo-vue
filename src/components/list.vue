@@ -1,6 +1,10 @@
 <script>
+import axios from "axios";
+
+
 import ButtonVue from './Button.vue';
 import todos from '../assets/todos.json';
+
 
 export default {
     data() {
@@ -11,13 +15,21 @@ export default {
         }
     },
     methods: {
-
+        async getData() {
+            try {
+                const response = await axios.get("http://localhost:4000/api/v1/todos");
+                this.todos = response.data.data;
+                // console.log(this.todos.data);
+            } catch (error) {
+                console.log(error);
+            }
+        },
         markDone (index) {
             const object = this.todos[index];
-            if (object.completed) {
-                this.todos[index].completed = false;
+            if (object.is_completed) {
+                this.todos[index].is_completed = 0;
 			}else {
-                this.todos[index].completed = true;
+                this.todos[index].is_completed = 1;
                 
 			}
 			this.total_todos = this.todos.length;
@@ -42,7 +54,7 @@ export default {
         }
     },
     created () {
-        this.todos = todos;
+        this.getData();
     }
 }
     
@@ -54,19 +66,19 @@ props: ['todo'],
     <li class="py-3 sm:py-4"  v-for="(todo, index) in todos" :key="todo.id">
         <template v-if="editedTodoId === todo.id">
             <div class="flex">
-                <input type="text" v-model="todo.message" :ref="`field${todo.id}`" class="w-48 bg-gray-50 border border-gray-300 text-gray text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+                <input type="text" v-model="todo.title" :ref="`field${todo.id}`" class="w-48 bg-gray-50 text-gray text-sm rounded-lg focus:outline-0 block p-2.5"/>
                 <button class="ml-2 mt-2 ext-white bg-yellow hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click.prevent="editItem">save</button>
             </div>
         </template>
         <template v-else>
-            <div class="flex items-center" @dblclick.prevent="editItem(todo.id)">
+            <div class="flex items-center">
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium truncate" :class="[ todo.completed ? 'text-gray-light line-through' : 'text-gray' ]">
-                        {{ todo.message }}
+                    <p @click.prevent="editItem(todo.id)" class="text-sm font-medium truncate" :class="[ todo.is_completed ? 'text-gray-light line-through' : 'text-gray' ]">
+                        {{ todo.title }}
                     </p>
                 </div>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900" @click="markDone(index)">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" v-if="todo.completed" class="w-6 h-6 text-green done transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" v-if="todo.is_completed" class="w-6 h-6 text-green done transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white cursor-pointer">
                         <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
                     </svg>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" v-else class="w-6 h-6 text-green done transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white cursor-pointer">
