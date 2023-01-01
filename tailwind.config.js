@@ -10,6 +10,7 @@ module.exports = {
       'bg-dark': '#0F172A',
       'card-dark': '#1E293B',
       'blue': '#1fb6ff',
+      'black': '#000',
       'purple': '#7e5bef',
       'green': '#13ce66',
       'red': '#E64848',
