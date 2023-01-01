@@ -2,16 +2,37 @@
 export default {
     data () {
         return {
-            theme: true,
+            darkMode: false
         }
     },
-    mounted() {
-        let localTheme = localStorage.getItem('theme');
-        document.documentElement.setAttribute('data-theme', localTheme);
+    methods: {
+        dark() {
+            document.querySelector('body').classList.add('dark-mode')
+            this.darkMode = true
+            this.$emit('dark')
+        },
+
+        light() {
+            document.querySelector('body').classList.remove('dark-mode')
+            this.darkMode = false
+            this.$emit('light')
+        },
+
+        modeToggle() {
+            if(this.darkMode || document.querySelector('body').classList.contains('dark-mode')) {
+                this.light()
+            } else {
+                this.dark()
+            }
+        },
     },
-    toggleTheme() {
-        console.log('data working')
+    
+    computed: {
+        darkDark() {
+            return this.darkMode && 'darkmode-toggled'
+        }
     }
+
 }
 </script>
 <template>
@@ -21,16 +42,92 @@ export default {
                 <!-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 mr-3 sm:h-10" alt="Flowbite Logo" /> -->
                 <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-grey">Todo</span>
             </a>
-            <button data-collapse-toggle="theme" aria-label="Toggle themes" @click:prevent="toggleTheme" class="focus:outline-0 inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-                <!-- <span class="sr-only">Open main menu</span> -->
-                <svg xmlns="http://www.w3.org/2000/svg" v-if = "this.theme" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-6 h-6 text-grey done transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white cursor-pointer">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" v-else fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-6 h-6 text-grey done transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white cursor-pointer">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-                </svg>
 
-            </button>
+            <div id="theme-toggle">
+                <div class="is-flex">
+                    <div class="mode-toggle bg-grey" @click="modeToggle" :class="darkDark">
+                    <div class="toggle">
+                        <div id="dark-mode" type="checkbox">
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 </template>
+
+<style>
+body.dark-mode {
+  background-color: #242424;
+}
+body.dark-mode .flex h1 {
+  color: #fff;
+}
+.mode-toggle {
+  position: relative;
+  padding: 0;
+  width: 44px;
+  height: 24px;
+  min-width: 36px;
+  min-height: 20px;
+  background-color: #fff;
+  border: 0;
+  border-radius: 24px;
+  outline: 0;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 2;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none;
+  appearance: none;
+  transition: background-color 0.5s ease;
+}
+.mode-toggle .toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  box-shadow: inset 0 0 0 2px #262626;
+  overflow: hidden;
+  transition: transform 0.5s ease;
+}
+.mode-toggle .toggle #dark-mode {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.mode-toggle .toggle #dark-mode:before {
+  content: "";
+  position: relative;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  float: left;
+  background-color: #262626;
+  transition: border-radius 0.5s ease, width 0.5s ease, height 0.5s ease,
+    left 0.5s ease, transform 0.5s ease;
+}
+body.dark-mode .mode-toggle {
+  background-color: #333;
+}
+body.dark-mode .mode-toggle .toggle {
+  box-shadow: inset 0 0 0 2px #a5abba;
+  transform: translateX(19px);
+}
+body.dark-mode .mode-toggle .toggle #dark-mode:before {
+  border-radius: 50%;
+  width: 150%;
+  height: 85%;
+  left: 40%;
+  background-color: #a5abba;
+  transform: translate(-10%, -40%), rotate(-35deg);
+}
+</style>

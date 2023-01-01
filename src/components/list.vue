@@ -18,8 +18,7 @@ export default {
         async getData() {
             try {
                 const response = await axios.get("http://localhost:4000/api/v1/todos");
-                this.todos = response.data.data;
-                // console.log(this.todos.data);
+                return this.todos = response.data.data;
             } catch (error) {
                 console.log(error);
             }
@@ -35,22 +34,36 @@ export default {
 			this.total_todos = this.todos.length;
         },
         editItem(index) {
+            
             if (index) {
                 this.editedTodoId = index;
-                this.$nextTick(() => {
-                    if (this.$refs["todo" + index]) {
-                        this.$refs["todo" + index][0].focus();
-                    }
-                });
+
+                const data = {title: this.newTodo, is_completed: 0}
+
+                axios.put(`http://localhost:4000/api/v1/todos/${this.editedTodoId}`, data)
+                    .then(res => {
+                        console.log('data edited')
+                    })
+                    .catch(err => console.log(err));
             } else {
                 this.editedTodoId = null;
             }
         },
 
-        deleteItem(index) {
-            this.todos.splice(index, 1);
-            this.total_todos = this.todos.length;
-            console.log(`${index}th element deleted! `);
+        async deleteItem(index) {
+            this.editedTodoId = index;
+            const result = this.todos.find(obj => {
+                return obj.id === 33
+            })
+            axios.delete(`http://localhost:4000/api/v1/todos/${result.id}`)
+                .then(res => this.todos = this.todos.filter(todo => todo.id !== id))
+                .catch(err => console.log(err));
+
+        //this.todos = this.todos.filter(todo => todo.id !== id);
+        //    await axios.delete(`http://localhost:4000/api/v1/todos/`)
+            // this.todos.splice(index, 1);
+            // this.total_todos = this.todos.length;
+            // console.log(`${index}th element deleted! `);
         }
     },
     created () {
@@ -66,7 +79,7 @@ props: ['todo'],
     <li class="py-3 sm:py-4"  v-for="(todo, index) in todos" :key="todo.id">
         <template v-if="editedTodoId === todo.id">
             <div class="flex">
-                <input type="text" v-model="todo.title" :ref="`field${todo.id}`" class="w-48 bg-gray-50 text-gray text-sm rounded-lg focus:outline-0 block p-2.5"/>
+                <input type="text" v-model="todo.title" :ref="`field${todo.id}`" class="w-48 bg-gray-50 text-gray text-sm rounded-lg focus:outline-0 dark:bg-gray-900 block p-2.5"/>
                 <button class="ml-2 mt-2 ext-white bg-yellow hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click.prevent="editItem">save</button>
             </div>
         </template>

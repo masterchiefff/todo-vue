@@ -14,17 +14,11 @@ export default {
             if(this.newTodo === '' || this.newTodo === null || this.newTodo === 0) {
                 console.log('field is empty')
             }else {
-                axios.post('http://localhost:4000/api/v1/todos', {
-                    title: this.newTodo
-                })
+                const data = {title: this.newTodo, is_completed: 0}
+                axios.post('http://localhost:4000/api/v1/todos', data)
                 .then(response => {
-                    const todo = this.todos.push({
-                        id: response.data.id,
-                        message: this.newTodo,
-                        completed: false
-                    });
-                    window.localStorage.setItem('todo', JSON.stringify(todo));
-                    this.newTodo = '';
+                    const todo = this.todos.push(data);
+                    this.newTodo = ''; 
                     
                 })
                 .catch(error => {
