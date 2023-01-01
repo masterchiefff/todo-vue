@@ -35,9 +35,9 @@ export default {
 
 <template>
     <form action="submit" v-on:submit.prevent='submitItem'>
-        <div class="p-4 bg-white rounded-lg shadow md:flex md:items-center mt-4 md:justify-between md:p-6 dark:bg-gray-800">
+        <div class="p-4 bg-white rounded-lg shadow md:flex md:items-center mt-4 md:justify-between md:p-6 dark:bg-card-dark">
             <div class="flex">
-                <input type="text" v-model="newTodo" placeholder="Create a todo" class="w-48 border-transparent focus:outline-0 mb-2 text-sm font-medium text-gray px-2.5"/>
+                <input type="text" v-model="newTodo" placeholder="Create a todo" class="w-48 border-transparent focus:outline-0 mb-2 text-sm font-medium text-gray px-2.5 dark:bg-card-dark"/>
                 <button class="ml-2 ext-white bg-purple text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Create Todo</button>
             </div>
         </div>

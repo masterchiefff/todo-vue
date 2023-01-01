@@ -1,11 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",],
   theme: {
     extend: {},
     colors: {
+      'bg-dark': '#0F172A',
+      'card-dark': '#1E293B',
       'blue': '#1fb6ff',
       'purple': '#7e5bef',
       'green': '#13ce66',

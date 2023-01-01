@@ -7,12 +7,14 @@ export default {
     },
     methods: {
         dark() {
+            document.querySelector('html').classList.add('dark')
             document.querySelector('body').classList.add('dark-mode')
             this.darkMode = true
             this.$emit('dark')
         },
 
         light() {
+            document.querySelector('html').classList.remove('dark')
             document.querySelector('body').classList.remove('dark-mode')
             this.darkMode = false
             this.$emit('light')
@@ -36,16 +38,16 @@ export default {
 }
 </script>
 <template>
-    <nav class="p-4 sm:p-8 bg-white rounded-t-sm bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+    <nav class="p-4 sm:p-8 bg-white rounded-t-sm bg-gray-50 dark:bg-gray-800 dark:bg-card-dark">
         <div class="container flex flex-wrap items-center justify-between mx-auto">
             <a href="#" class="flex items-center">
                 <!-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 mr-3 sm:h-10" alt="Flowbite Logo" /> -->
-                <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-grey">Todo</span>
+                <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Todo</span>
             </a>
 
             <div id="theme-toggle">
                 <div class="is-flex">
-                    <div class="mode-toggle bg-grey" @click="modeToggle" :class="darkDark">
+                    <div class="mode-toggle dark:bg-bg-dark" @click="modeToggle" :class="darkDark">
                     <div class="toggle">
                         <div id="dark-mode" type="checkbox">
                         </div>
@@ -61,9 +63,9 @@ export default {
 body.dark-mode {
   background-color: #242424;
 }
-body.dark-mode .flex h1 {
+/* body.dark-mode .flex h1 {
   color: #fff;
-}
+} */
 .mode-toggle {
   position: relative;
   padding: 0;
@@ -116,7 +118,7 @@ body.dark-mode .flex h1 {
     left 0.5s ease, transform 0.5s ease;
 }
 body.dark-mode .mode-toggle {
-  background-color: #333;
+  background-color: #0F172A;
 }
 body.dark-mode .mode-toggle .toggle {
   box-shadow: inset 0 0 0 2px #a5abba;

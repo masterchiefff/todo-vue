@@ -76,17 +76,17 @@ export default {
 props: ['todo'],
 
 <template>
-    <li class="py-3 sm:py-4"  v-for="(todo, index) in todos" :key="todo.id">
+    <li class="py-3 sm:py-4 dark:bg-card-dark"  v-for="(todo, index) in todos" :key="todo.id">
         <template v-if="editedTodoId === todo.id">
-            <div class="flex">
-                <input type="text" v-model="todo.title" :ref="`field${todo.id}`" class="w-48 bg-gray-50 text-gray text-sm rounded-lg focus:outline-0 dark:bg-gray-900 block p-2.5"/>
+            <div class="flex dark:bg-card-dark">
+                <input type="text" v-model="todo.title" :ref="`field${todo.id}`" class="w-48 bg-gray-50 text-gray text-sm rounded-lg focus:outline-0 dark:bg-card-dark block p-2.5"/>
                 <button class="ml-2 mt-2 ext-white bg-yellow hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click.prevent="editItem">save</button>
             </div>
         </template>
         <template v-else>
             <div class="flex items-center">
                 <div class="flex-1 min-w-0">
-                    <p @click.prevent="editItem(todo.id)" class="text-sm font-medium truncate" :class="[ todo.is_completed ? 'text-gray-light line-through' : 'text-gray' ]">
+                    <p @click.prevent="editItem(todo.id)" class="text-sm font-medium truncate dark:text-grey-light" :class="[ todo.is_completed ? 'text-gray-light  line-through' : 'text-gray' ]">
                         {{ todo.title }}
                     </p>
                 </div>
