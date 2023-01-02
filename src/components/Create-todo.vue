@@ -29,8 +29,8 @@ export default {
         },
 
         submitItem (id, text, completed, description) {
-            if(this.newTodo === '' || this.newTodo === null || this.newTodo === 0 && this.newDescription === '' || this.newDescription === null || this.newDescription === 0) {
-                console.log('field is empty')
+            if(this.newTodo === '' || this.newTodo === null || this.newTodo === 0) {
+                return false;
             }else {
                 const data = {title: this.newTodo, is_completed: 0, description: this.newDescription }
                 axios.post('http://localhost:4000/api/v1/todos', data)
@@ -61,9 +61,9 @@ export default {
             </svg>
         </div>
     </div>
-    <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="animate__bounceIn fixed top-0 h-screen left-0 right-0 z-50 flex w-full hidden overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+    <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 h-screen left-0 right-0 z-50 flex w-full hidden overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
         <div class="overlay absolute h-full w-full opacity-70 bg-black dark:bg-card-dark"></div>
-        <div class="relative w-full flex justify-center item-center md:h-auto h-screen">
+        <div class="relative w-full flex justify-center item-center md:h-auto h-screen animate__bounceIn">
             <!-- Modal content -->
             <div class="relative h-96 bg-white justify-center mt-20 item-center rounded-lg shadow dark:bg-card-dark">
                 <button type="button" @click="closeModal" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="authentication-modal">
