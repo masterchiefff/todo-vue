@@ -32,13 +32,13 @@ export default {
                 ]
 
             const days = [
+                'Sunday',
                 'Monday',
                 'Tuesday',
                 'Wednesday',
                 'Thursday',
                 'Friday',
                 'Saturday',
-                'Sunday',
                 ]
 
             const monthIndex = date.getMonth();

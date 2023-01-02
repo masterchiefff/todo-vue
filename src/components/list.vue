@@ -11,14 +11,51 @@ export default {
         return {
             editedTodoId: null,
             total_todos: 0,
-            todos: []
+            todos: [],
+            days: []
         }
     },
     methods: {
+        getDay(date){
+            const fullDate = new Date(date);
+            const days = [
+                'Sun',
+                'Mon',
+                'Tue',
+                'Wed',
+                'Thu',
+                'Fri',
+                'Sat',
+                ]
+
+            const dayIndex = fullDate.getDay();
+            const dayName = days[dayIndex];
+
+            return dayName;
+        },
+
+        getDate(date){
+            const fullDate = new Date(date);
+            const dates = fullDate.getDate();
+
+            return dates;
+        },
+
+        getTime(date){
+            const fullDate = new Date(date);
+            const hours = fullDate.getHours();
+            const minutes = fullDate.getMinutes();
+
+            return hours + ":" + minutes;
+        },
+
         async getData() {
             try {
+                
                 const response = await axios.get("http://localhost:4000/api/v1/todos");
-                return this.todos = response.data.data;
+                this.todos = response.data.data;
+                return this.todos
+
             } catch (error) {
                 console.log(error);
             }
@@ -52,21 +89,19 @@ export default {
 
         async deleteItem(index) {
             this.editedTodoId = index;
-            const result = this.todos.find(obj => {
-                return obj.id === 33
-            })
-            axios.delete(`http://localhost:4000/api/v1/todos/${result.id}`)
-                .then(res => this.todos = this.todos.filter(todo => todo.id !== id))
-                .catch(err => console.log(err));
-
-        //this.todos = this.todos.filter(todo => todo.id !== id);
-        //    await axios.delete(`http://localhost:4000/api/v1/todos/`)
-            // this.todos.splice(index, 1);
-            // this.total_todos = this.todos.length;
-            // console.log(`${index}th element deleted! `);
+            // const result = this.todos.find(obj => {
+            //     return obj.id === 33
+            // })
+            this.todos.splice(index,1);
+			this.total_todos = this.todos.length;
+            // axios.delete(`http://localhost:4000/api/v1/todos/${result.id}`)
+            //     .then(res => this.todos = this.todos.filter(todo => todo.id !== id))
+            //     .catch(err => console.log(err));
         }
     },
     created () {
+        // const dayName = days[dayIndex];
+        // this.day = dayName;
         this.getData();
     }
 }
@@ -86,7 +121,7 @@ props: ['todo'],
         <template v-else>
             <div class="flex items-center">
                 <div class="flex-1 min-w-0">
-                    <p @click.prevent="editItem(todo.id)" class="text-sm font-medium truncate dark:text-grey-light" :class="[ todo.is_completed ? 'text-gray-light  line-through' : 'text-gray' ]">
+                    <p @click.prevent="editItem(todo.id)" class="text-md font-medium truncate dark:text-grey-light" :class="[ todo.is_completed ? 'text-gray-light  line-through' : 'text-gray' ]">
                         {{ todo.title }}
                     </p>
                 </div>
@@ -105,5 +140,27 @@ props: ['todo'],
                 </div>
             </div>
         </template>
+        <!-- <div>
+            <p class="text-sm text-grey-dark-xs">This is a simple description</p>
+            <div class="flex">
+                <div class="left flex-1">
+                    <p class="text-xs text-blue">Tue 26 3:00 PM - Fri 29 4:30PM</p>
+                </div>
+                <div class="right inline-flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red done transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white cursor-pointer">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+                    </svg>
+                </div>
+            </div>
+        </div> -->
+        <div class="flex items-center">
+            <div class="flex-1 min-w-0">
+                <p class="text-xs text-grey-dark-xs">{{ todo.description }}</p>
+                <p class="text-xs text-blue">{{ this.getDay(todo.date_start) }} {{ this.getDate(todo.date_start) }} {{ this.getTime(todo.date_start) }} - {{ this.getDay(todo.date_start) }} {{ this.getDate(todo.date_start) }} {{ this.getTime(todo.date_start) }}</p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                <p class="text-xs font-bold bottom-0 text-grey-dark-xs">Priority: <span class="text-red">{{ todo.priority }}</span></p>
+            </div>
+        </div>
     </li>
 </template>
