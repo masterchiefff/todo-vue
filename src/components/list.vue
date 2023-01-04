@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-
+import { ref, onMounted } from 'vue'
 
 import ButtonVue from './Button.vue';
 import todos from '../assets/todos.json';
@@ -54,19 +54,41 @@ export default {
                 
                 const response = await axios.get("http://localhost:4000/api/v1/todos");
                 this.todos = response.data.data;
+
+                const objPriority = this.todos.map(todo => todo.priority);
+                // console.log(this.$refs.input);
+                // switch (objPriority) {
+                //     case objPriority.includes('priority'):
+                //         break;
+
+                //     case objPriority.includes('medium'):
+                //         break;
+                
+                //     default:
+                //         break;
+                // }
                 return this.todos
 
             } catch (error) {
                 console.log(error);
             }
         },
-        markDone (index) {
+        async markDone (index) {
             const object = this.todos[index];
             if (object.is_completed) {
-                this.todos[index].is_completed = 0;
+                object.is_completed = 0;
+                axios.put(`http://localhost:4000/api/v1/todos/${object.id}`, {is_completed: 0})
+                .then(response => {})
+                .catch(error => {
+                    console.log(error);
+                });
 			}else {
-                this.todos[index].is_completed = 1;
-                
+                object.is_completed = 1;
+                axios.put(`http://localhost:4000/api/v1/todos/${object.id}`, {is_completed: 1})
+                .then(response => {})
+                .catch(error => {
+                    console.log(error);
+                });
 			}
 			this.total_todos = this.todos.length;
         },
@@ -103,18 +125,17 @@ export default {
         // const dayName = days[dayIndex];
         // this.day = dayName;
         this.getData();
-    }
+        
+    },
 }
     
 </script>
 
-props: ['todo'],
-
 <template>
-    <li class="py-3 sm:py-4 dark:bg-card-dark"  v-for="(todo, index) in todos" :key="todo.id">
+    <li class="py-3 sm:py-4 dark:bg-card-dark"  v-for="(todo, index) in todos" :key="todo.id" >
         <template v-if="editedTodoId === todo.id">
             <div class="flex dark:bg-card-dark">
-                <input type="text" v-model="todo.title" :ref="`field${todo.id}`" class="w-48 bg-gray-50 text-gray text-sm rounded-lg focus:outline-0 dark:bg-card-dark block p-2.5"/>
+                <input ref="input" type="text" v-model="todo.title" :ref="`field${todo.id}`" class="w-48 bg-gray-50 text-gray text-sm rounded-lg focus:outline-0 dark:bg-card-dark block p-2.5"/>
                 <button class="ml-2 mt-2 ext-white bg-yellow hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2" @click.prevent="editItem">save</button>
             </div>
         </template>
@@ -159,7 +180,7 @@ props: ['todo'],
                 <p class="text-xs text-blue">{{ this.getDay(todo.date_start) }} {{ this.getDate(todo.date_start) }} {{ this.getTime(todo.date_start) }} - {{ this.getDay(todo.date_start) }} {{ this.getDate(todo.date_start) }} {{ this.getTime(todo.date_start) }}</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-gray-900">
-                <p class="text-xs font-bold bottom-0 text-grey-dark-xs">Priority: <span class="text-red">{{ todo.priority }}</span></p>
+                <p class="text-xs font-bold bottom-0 text-grey-dark-xs">Priority: <span id="priority" ref="pri"  class="text-blue">{{ todo.priority }}</span></p>
             </div>
         </div>
     </li>
